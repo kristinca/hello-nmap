@@ -82,4 +82,45 @@
 
     * !!! ProtonVPN  -> off !!!
 
+3. Host Discovery ("Ping Scanning")
+3.1 . Introduction
+    - One of the very first steps in any network reconnaissance mission
+        => to reduce a (sometmes huge) set of IP ranges into a list of active or interesting hosts
+    - Scanning every port of every single IP address ---> don't do it; slow and usually unnecessary;
+    - Network administrators may only be interested in hosts running a certain service
+        * An administrator may be comfortable using an ICMP ping to locate hosts on his internal network
+    - Security auditors may care about every single device with an IP address
+        * external penetration tester may use a diverse set of dozens of probes in an attempt to evade firewall restrictions
+    - Despite the name ping scan, this goes well beyond the simple ICMP echo request packets
+      associated with the ubiquitous ping tool
+        * list scan (-sL): skip the ping step entirely with a list scan
+        * disable scan (-PN)
+        * engage the network with arbitrary combinations of multi-port TCP SYN/ACK, UDP, and ICMP probes
+            ** The goal of these probes is to solicit responses which demonstrate that an IP address is actually active
+
+3.2. Specifying Target Hosts and Networks
+    - Everything on the Nmap command-line that isn't an option (or option argument) is treated as
+        !!! a target host specification !!!
+        * The simplest case is to specify a target IP address or hostname for scanning
+    - Scanning a whole network of adjacent hosts
+        * Nmap supports CIDR-style addressing: You can append /<nbits> to an IPv4 address or hostname
+          and Nmap will scan every IP address for which the first <nbits>
+          are the same as for the reference IP or hostname given
+          ** CIDR notation is short but not always flexible enough
+        * example: 192.168.10.0/24 would scan the 256 hosts between 192.168.10.0  and 192.168.10.255
+            ** 192.168.10.40/24 would scan exactly the same targets
+    - The smallest allowed value is /0, which scans the whole Internet
+    - The largest value is /32, which scans just the named host or IP address because all address bits are fixed
+    - you might want to scan 192.168.0.0/16 but skip any IPs ending with .0 or .255
+        => they may be used as subnet network and broadcast addresses
+    - Nmap supports octet range addressing
+        * you can specify a comma-separated list of numbers or ranges for each octet
+        * example: 192.168.0-255.1-254 will skip all addresses in the range that end in .0 or .255
+        * ranges don't need to be limited to the final octets
+            ** the specifier 0-255.0-255.13.37 will perform an Internet-wide scan for all IP addresses ending in 13.37
+            ** this broad sampling can be useful for Internet surveys and research
+        * CIDR and octet ranges aren't supported for 1Pv6
+            ** they are rarely useful
+            ** IPv6 addresses can only be specified by their fully qualified IPv6 address or hostname
+    - Nmap accepts multiple host specifications on the command line, and they don't need to be the same type
 ]]

@@ -119,8 +119,10 @@
         * ranges don't need to be limited to the final octets
             ** the specifier 0-255.0-255.13.37 will perform an Internet-wide scan for all IP addresses ending in 13.37
             ** this broad sampling can be useful for Internet surveys and research
-        * CIDR and octet ranges aren't supported for 1Pv6
+        * CIDR and octet ranges aren't supported for IPv6
             ** they are rarely useful
             ** IPv6 addresses can only be specified by their fully qualified IPv6 address or hostname
     - Nmap accepts multiple host specifications on the command line, and they don't need to be the same type
+    
+    nmap -Pn ipv4 ---> scan w/o ping, useful if ICMP is blocked
 ]]

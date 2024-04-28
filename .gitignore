@@ -37,3 +37,6 @@ temp/
 [._]sw[a-p]
 
 lua*
+
+*.xml
+*.txt

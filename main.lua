@@ -125,4 +125,21 @@
     - Nmap accepts multiple host specifications on the command line, and they don't need to be the same type
     
     nmap -Pn ipv4 ---> scan w/o ping, useful if ICMP is blocked
+
+3.2.1. Input From List (-iL)
+    - generate list of hosts to scan and pass that filename to Nmap as an argument to the -iL option
+    - Entries can be in any of the formats accepted by Nmap on the command line
+        * IP address
+        * hostname
+        * CIDR
+        * IPv6
+        * octet ranges
+        separated by one or more spaces, tabs, or newlines.
+    - hyphen (-) as the filename ---> Nmap will read hosts from standard input
+
+3.2.3. Excluding Targets (--exclude, --excludefile <filename>)
+    - exclude hosts or entire networks with the --exclude option (--excludefile ---> a file with hosts/networks)
+
+    - Obtain the list of assigned DHCP IP addresses and feed them directly to Nmap for scanning
+        egrep '^lease'/var/lib/dhcp/dhcpd.leases | awk '{print $2}' | nmap -iL -
 ]]

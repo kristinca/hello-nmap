@@ -142,4 +142,26 @@
 
     - Obtain the list of assigned DHCP IP addresses and feed them directly to Nmap for scanning
         egrep '^lease'/var/lib/dhcp/dhcpd.leases | awk '{print $2}' | nmap -iL -
+
+3.3. Finding an Organization's IP Addresses
+    - DO carefully research target netblocks BEFORE scanning them !!!
+    - An authorization letter signed by your client WONT'T HELP YOU if you accidentally break into the wrong company
+
+3.3.1. DNS Tricks
+    - the primary purpose of DNS is to resolve domain names into IP addresses ---> we can start here yay ^^
+
+3.3.2. Whois Queries Against IP Registries
+    - To find which IP belongs to the company you expect + determine what netblocks they are part of, we have the registries:
+        * ARIN (American Registry for Internet Numbers)
+        * RIPE for Europe and the Middle East.
+    - Small and mid-sized companies normally don't have IP space allocated by the likes of ARIN
+        * they are delegated netblocks from their ISPs
+    - many ISPs subdelegate customer ranges using Shared Whois (SWIP) or Referral Whois (RWhois)
+
+3.3.3. Internet Routing Information
+    - Border Gateway Protocol (BGP)
+        * The core routing protocol of the Internet
+        * When scanning mid-sized and large organizations,
+          BGP routing tables can help you find their IP subnets all over the world
+
 ]]

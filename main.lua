@@ -164,4 +164,30 @@
         * When scanning mid-sized and large organizations,
           BGP routing tables can help you find their IP subnets all over the world
 
+3.4 DNS Resolution
+    - The key focus of Nmap host discovery ---> determining WHICH HOSTS ARE UP and RESPONSIVE on the network
+    - By default, Nmap performs reverse-DNS resolution for EVERY IP which responds to host discovery probes (is online)
+    - If host discovery is skipped with -Pn, resolution is performed for all IPs
+    - Nmap uses a custom stub resolver which performs dozens of requests in parallel
+
+3.5. Host Discovery Controls
+    - Nmap will include a ping scanning stage prior to more intrusive probes:
+        * port scans
+        * OS detection
+        * Nmap Scripting Engine
+        * version detection.
+    - -Pn : scan every IP
+
+3.5.1. List Scan (-sL)
+    - just lists each host on the network(s) specified, without sending any packets to the target hosts
+    - Nmap still performs reverse-DNS resolution on the hosts to learn their names
+    - Nmap reports the total number of IP addresses at the end
+    - List scan is a good sanity check to ensure that you have proper IP addresses for your targets
+    - Another reason for an advance list scan is stealth
+        * In some cases, you do not want to begin with a full-scale assault on the target network
+            that is likely to trigger IDS alerts and bring unwanted attention
+        * you can bounce through anonymous recursive DNS servers using the --dns-servers option
+    - List scan is unobtrusive and provides information
+      that may be useful in choosing which individual machines to target
+    
 ]]

@@ -1,6 +1,6 @@
 -- in Lua, we have local and global vars
 -- don't use global
-local nmap_command = "nmap scanme.nmap.org 192.168.0.0/32"
+local nmap_command = "nmap scanme.nmap.org ipv4"
 
 -- some_result = assert(some_function(), "Error: some_function failed.")
 -- io.popen -> function in the Lua std lib that opens a process and returns a file handle, 

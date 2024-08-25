@@ -189,5 +189,48 @@
         * you can bounce through anonymous recursive DNS servers using the --dns-servers option
     - List scan is unobtrusive and provides information
       that may be useful in choosing which individual machines to target
+
+3.5.2. Ping Scan (-sP)
+    - only perform a ping scan, then print out the available hosts that responded to the scan
+    - specify Nmap Scripting Engine (--script) host scripts and traceroute probing (--traceroute) for further testing
+    - Knowing how many hosts are up is MORE valuable to attackers
+      than the list of every single IP and host name provided by list scan
+
+        * example: nmap -sP -T4 www.lwn.net/24
+            ** The -sP option sends an ICMP echo request and a TCP ACK packet to port 80 BY DEFAULT
+            ** Unix users (or Windows users without WinPcap installed) cannot send these raw packets
+                -> a SYN packet is sent instead, using a TCP connect system call to port 80 of the target host
+            ** A privileged user tries to scan targets on a local ethernet network
+                -> ARP requests (-PR) are used
+                -> unless the --send -ip option is specified
+
+3.5.3. Disable Ping (-PN)
+    - skip Nmap discovery stage altogether 
+    - By default, Nmap only performs heavy probing such as port scans,
+      version detection, or OS detection against hosts that are found to be up
+    - Disabling host discovery with -PN -> Nmap will attempt the requested scanning functions
+      against EVERY TARGET IP address specified
+        * if a class B sized target address space (/16) is specified on the command line
+          -> ALL 65,536 IP addresses are scanned !!!
+    - One can specify dozens of different ping probes in an attempt to elicit a response from all available hosts,
+      
+      BUT
     
+      it is still possible that an active yet heavily firewalled machine might not reply to any of those probes.
+    - to avoid missing anything, auditors frequently perform intense scans,
+      such as for all 65,536 TCP ports, against every IP on the target network
+        * it can slow scan times by an order of magnitude or more
+        * Nmap must send retransmissions to every port in case the original probe was dropped in transit
+        * Nmap must spend substantial time waiting for responses
+          because it has no round-trip-time (RTT) estimate for these non-responsive IP addresses
+    - if the tester has a list of machines that are already known to be up:
+        * one can see no point in wasting time with the host discovery stage
+        * create a list of active hosts and then pass it to Nmap using the -iL (take input from list) option
+            ** this strategy is RARELY beneficial from a time-saving perspective
+            ** due to the retransmission and RTT estimate issues
+               even ONE unresponsive IP address in a large list will often take more time to scan
+               than a WHOLE ping scanning stage would have
+        * the ping stage allows Nmap to gather RTT samples
+          that can speed up the following port scan,
+          particularly if the target host has strict firewall rules.
 ]]

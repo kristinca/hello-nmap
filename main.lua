@@ -233,4 +233,8 @@
         * the ping stage allows Nmap to gather RTT samples
           that can speed up the following port scan,
           particularly if the target host has strict firewall rules.
+
+3.6. Host Discovery Techniques
+    - hosts can no longer be assumed unavailable based on failure to reply to ICMP ping probes
+    -
 ]]

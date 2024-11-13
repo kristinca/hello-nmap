@@ -236,5 +236,23 @@
 
 3.6. Host Discovery Techniques
     - hosts can no longer be assumed unavailable based on failure to reply to ICMP ping probes
-    -
+
+3.6.1. TCP SYN Ping (-PS <port list>)
+    - PS : sends empty TCP packet with SYN flag set on default port 80 
+            * configurable at compile time by changing DEFAULT_TCP_PROBE_PORT_SPEC in nmap.h
+    - list of ports may be specified (e.g.-PS22-25,80,113,1050,35000),
+        in which case probes will be attempted against each port in parallel.
+    - SYN : we are attempting to establish a connection
+        * Normally the destination port will be closed, and a RST (reset) packet will be sent back
+        * if the port is open: the target will respond with a SYN/ACK TCP packet
+        * The machine running Nmap then tears down the nascent connection by responding with a RST rather than
+            sending an ACK packet which would complete the three-way-handshake and establish a full connection
+        * nmap just needs the RST or SYN/ACK response to tell that the host is available and responsive
+        * on UNIX, only root can send /receive raw TCP packets
+            ** unprivileged: the connect system call is initiated against each target port
+            ** =  sending a SYN packet to the target host, in an attempt to establish a connection
+            ** quick success or an ECONNREFUSED failure ===> 
+                the underlying TCP stack must have received a SYN/ACK or RST and the host is marked available
+            **  If the connection attempt is left hanging until a timeout is reached, the host is marked as down
+            **  also used for IPv6 connection
 ]]
